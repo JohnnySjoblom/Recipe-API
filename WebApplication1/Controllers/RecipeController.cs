@@ -4,6 +4,7 @@ using WebApplication1.Data;
 using WebApplication1.Models;
 using WebApplication1.DTOs;
 
+
 namespace WebApplication1.Controllers;
 
 [ApiController]
@@ -18,7 +19,9 @@ public class RecipesController : ControllerBase
     }
 
         [HttpGet]
-            public async Task<IActionResult> GetAllRecipes()
+        public async Task<IActionResult> GetAllRecipes()
+        {
+            try
             {
                 var recipes = await _context.Recipes
                     .Select(r => new RecipeResponseDto
@@ -29,12 +32,19 @@ public class RecipesController : ControllerBase
                         .ToListAsync();
 
                         return Ok(recipes);
-
             }
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while retrieving recipes.");
+            }
+        }
+               
 
     
         [HttpGet("{id}")]
-            public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get(int id)
+        {
+            try
             {
                 var recipe = await _context.Recipes.FindAsync(id);
 
@@ -48,9 +58,16 @@ public class RecipesController : ControllerBase
                     });
         
             }
+            catch (Exception)                
+            {
+                return StatusCode(500, "An error occurred while retrieving the recipe.");
+            }
+        }
     
         [HttpPost]
-            public async Task<IActionResult> Create(RecipeCreateDto dto)
+        public async Task<IActionResult> Create(RecipeCreateDto dto)
+        {
+            try           
             {
                 if (string.IsNullOrEmpty(dto.Name))
                     return BadRequest("Name is required");
@@ -64,12 +81,25 @@ public class RecipesController : ControllerBase
                     _context.Recipes.Add(recipe);
                     await _context.SaveChangesAsync();
 
-                    return CreatedAtAction(nameof(Get), new { id = recipe.Id }, recipe);
+                    var responseDto = new RecipeResponseDto
+                    {
+                        Id = recipe.Id,
+                        Name = recipe.Name,
+                    };
 
+                    return CreatedAtAction(nameof(Get), new { id = recipe.Id }, responseDto);
+
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while creating the recipe.");
             }   
+        }
 
         [HttpPut("{id}")]
-            public async Task<IActionResult> Update(int id, RecipeCreateDto dto)
+        public async Task<IActionResult> Update(int id, RecipeCreateDto dto)
+        {
+            try
             {
                 var recipe = await _context.Recipes.FindAsync(id);
 
@@ -83,11 +113,19 @@ public class RecipesController : ControllerBase
 
                     
                     return NoContent();
-
             }
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while updating the recipe.");
+            }
+        }
+            
+
 
         [HttpDelete("{id}")]
-            public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
             {
                 var recipe = await _context.Recipes.FindAsync(id);
         
@@ -99,10 +137,17 @@ public class RecipesController : ControllerBase
         
                     return NoContent();
             }
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while deleting the recipe.");
+            }
+        }
 
 
         [HttpGet("{id}/ingredients")]
-            public async Task<IActionResult> GetIngredientsForRecipe(int id)
+        public async Task<IActionResult> GetIngredientsForRecipe(int id)
+        {
+            try
             {
                 var recipe = await _context.Recipes
                     .Include(r => r.Ingredients)
@@ -120,11 +165,19 @@ public class RecipesController : ControllerBase
                     
                     return Ok(ingredients);
             }
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while retrieving ingredients for the recipe.");
+            }
+
+        }
+    }       
 
 
 
 
-}
 
-       
+
+
+
     

@@ -155,3 +155,4 @@ C:\Medieinstitutet\api-utveckling-.net\Examination2\WebApplication1\obj\Debug\ne
 C:\Medieinstitutet\api-utveckling-.net\Examination2\WebApplication1\obj\Debug\net9.0\WebApplication1.genruntimeconfig.cache
 C:\Medieinstitutet\api-utveckling-.net\Examination2\WebApplication1\obj\Debug\net9.0\ref\WebApplication1.dll
 C:\Medieinstitutet\api-utveckling-.net\Examination2\WebApplication1\bin\Debug\net9.0\Postman\RecipeApi.postman_collection.json
+C:\Medieinstitutet\api-utveckling-.net\Examination2\WebApplication1\obj\Debug\net9.0\WebApplication1.sourcelink.json
